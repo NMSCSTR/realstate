@@ -163,9 +163,12 @@ body {
                                 ?>
                             </td>
                             <td>
+                                <!-- code para sa pag update sa amenity -->
                                 <a href="edit_amenities.php?id=<?= htmlspecialchars($rows['amenity_id']); ?>"
                                     class="btn btn-sm btn-outline-primary">Edit</a>
-                                <a href="delete_aminities.php?id=<?= htmlspecialchars($rows['amenity_id']); ?>"
+                                    <!-- code para delete sa amenity sa property -->
+                                <a href="delete_amenities.php?id=<?= htmlspecialchars($rows['amenity_id']); ?>?property_id=<?= htmlspecialchars($rows['property_id']) ?>"
+                                    onclick="return confirm('Are you sure you want to delete?')"
                                     class="btn btn-sm btn-outline-danger">Delete</a>
                             </td>
                         </tr>

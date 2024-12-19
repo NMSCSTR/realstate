@@ -5,24 +5,39 @@ if (!isset($_SESSION['agent_id'])) {
     exit();
 }
 $conn = mysqli_connect("localhost", "root", "", "oreep360");
-$amenity_id = $_GET['id'];
+if (!$conn) {
+    die("Connection failed: " . mysqli_connect_error());
+}
+
+if (!isset($_GET['id']) || empty($_GET['id'])) {
+    header('Location: add_amenities.php');
+    exit();
+}
+
+$amenity_id =  $_GET['id'];
 $fetch = "SELECT * FROM `property_amenities` WHERE `amenity_id` = '$amenity_id'";
-$result = mysqli_query($conn,$fetch);
+$result = mysqli_query($conn, $fetch);
+if (!$result) {
+    die("Error fetching data: " . mysqli_error($conn));
+}
 $get_amenity_name = mysqli_fetch_assoc($result);
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_amenity'])) {
     $amenity_id = $_POST['amenity_id'];
     $name = $_POST['name'];
 
     $updateqry = "UPDATE `property_amenities` SET `name`='$name' WHERE amenity_id = '$amenity_id'";
 
-    if (mysqli_query($conn,$updateqry)) {
-        header('Location: add_amenities.php');
+    if (mysqli_query($conn, $updateqry)) {
+        header("Location: add_amenities.php?property_id=" . urlencode($get_amenity_name['property_id']));
+        exit();
+    } else {
+        echo "Error updating amenity: " . mysqli_error($conn);
     }
-
+    mysqli_close($conn);
 }
-
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -112,7 +127,7 @@ body {
 
             <form action="" method="post">
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control" name="amenity_id" value="<?= $get_amenity_name['amenity_id']?>" id="name" placeholder="Amenity Name">
+                    <input type="text" class="form-control" name="amenity_id" value="<?= $get_amenity_name['amenity_id']?>" id="id">
                     <input type="text" class="form-control" name="name" value="<?= $get_amenity_name['name']?>" id="name" placeholder="Amenity Name">
                     <label for="name">Amenity Name</label>
                 </div>
