@@ -139,7 +139,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </form>
 
             <!-- Display uploaded images in Bootstrap cards -->
-            <div id="display_selected_images">
+            <div id="display_selected_images" class="mt-5">
                 <h6>Uploaded Images</h6>
                 <div class="row">
                     <?php

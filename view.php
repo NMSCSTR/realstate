@@ -63,6 +63,11 @@ body {
         height: 300px;
     }
 }
+.carousel-image {
+    height: 400px; /* Set a fixed height */
+    object-fit: cover; /* Ensures images are scaled to cover the area without distorting */
+}
+
 </style>
 
 <body>
@@ -161,7 +166,54 @@ body {
                     </div>
                 </div>
 
-                <div id="map" class="mt-5"></div>
+                <div class="row">
+                    <div class="col">
+                        <div id="map" class="mt-5"></div>
+                    </div>
+                    <div class="col">
+                        <!-- display carousels -->
+                         <div class="mt-5">
+                         <h6><strong>Property Images</strong></h6>
+                        <?php
+                        // Fetch images related to the property
+                        $conn = mysqli_connect("localhost", "root", "", "oreep360");
+                        $query_images = "SELECT * FROM property_images WHERE property_id = '$property_id'";
+                        $result_images = mysqli_query($conn, $query_images);
+
+                        if (mysqli_num_rows($result_images) > 0) {
+                            echo '<div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
+                                    <div class="carousel-inner">';
+
+                            $active = "active"; // Set first image as active
+                            while ($image_row = mysqli_fetch_assoc($result_images)) {
+                                echo '<div class="carousel-item ' . $active . '">
+                                        <img src="' . substr(htmlspecialchars($image_row['image_path']),3) . '" class="d-block w-100 carousel-image" alt="Property Image">
+                                    </div>';
+                                $active = ""; // Set remaining images as non-active
+                            }
+
+                            echo '</div>
+                                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Previous</span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Next</span>
+                                </button>
+                            </div>';
+                        } else {
+                            echo "<p>No images available for this property.</p>";
+                        }
+
+                        mysqli_close($conn);
+                        ?>
+
+                         </div>
+                    </div>
+                </div>
+
+                
             </div>
         </div>
 
