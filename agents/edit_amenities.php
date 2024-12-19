@@ -10,6 +10,18 @@ $fetch = "SELECT * FROM `property_amenities` WHERE `amenity_id` = '$amenity_id'"
 $result = mysqli_query($conn,$fetch);
 $get_amenity_name = mysqli_fetch_assoc($result);
 
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $amenity_id = $_POST['amenity_id'];
+    $name = $_POST['name'];
+
+    $updateqry = "UPDATE `property_amenities` SET `name`='$name' WHERE amenity_id = '$amenity_id'";
+
+    if (mysqli_query($conn,$updateqry)) {
+        header('Location: add_amenities.php');
+    }
+
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -100,7 +112,8 @@ body {
 
             <form action="" method="post">
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control" value="<?= $get_amenity_name['name']?>" id="name" placeholder="Amenity Name">
+                    <input type="text" class="form-control" name="amenity_id" value="<?= $get_amenity_name['amenity_id']?>" id="name" placeholder="Amenity Name">
+                    <input type="text" class="form-control" name="name" value="<?= $get_amenity_name['name']?>" id="name" placeholder="Amenity Name">
                     <label for="name">Amenity Name</label>
                 </div>
                 <button type="submit" name="update_amenity" class="btn btn-primary">Update</button>
