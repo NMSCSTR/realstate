@@ -80,7 +80,7 @@ body {
         </nav>
     </header>
     <main>
-        <div class="container mt-4">
+        <div class="container mt-4 mb-4">
             <?php
                 $conn = mysqli_connect("localhost", "root", "", "oreep360");
                 $sql = "SELECT * FROM properties WHERE property_id = '$property_id'";
@@ -139,41 +139,46 @@ body {
                     <div>
                         <h6><strong>Contact Agent:</strong></h6>
                         <?php
-                     $conn = mysqli_connect("localhost", "root", "", "oreep360");
-                    $querys = mysqli_query($conn, "SELECT * FROM agents WHERE agent_id = '$agent_id'");
+                        $conn = mysqli_connect("localhost", "root", "", "oreep360");
+                        $querys = mysqli_query($conn, "SELECT * FROM agents WHERE agent_id = '$agent_id'");
 
-                    if ($querys && mysqli_num_rows($querys) > 0) {
-                        $get_agent = mysqli_fetch_assoc($querys); 
+                        if ($querys && mysqli_num_rows($querys) > 0) {
+                            $get_agent = mysqli_fetch_assoc($querys); 
                         ?>
-                        <div class="card shadow-sm border border-0">
-                            <div class="card-body ">
-                                <h5 class="card-title"><?php echo htmlspecialchars($get_agent['fullname']); ?></h5>
-                                <p class="card-text">
-                                    <?php echo htmlspecialchars($get_agent['contact_no']); ?>
-                                </p>
-                                <a href="mailto:<?php echo htmlspecialchars($get_agent['email_address']); ?>"
-                                    class="btn btn-primary">
-                                    Contact <?php echo htmlspecialchars($get_agent['fullname']); ?>
-                                </a>
+                            <div class="card shadow-sm border border-0">
+                                <div class="card-body ">
+                                    <h5 class="card-title"><?php echo htmlspecialchars($get_agent['fullname']); ?></h5>
+                                    <p class="card-text">
+                                        <?php echo htmlspecialchars($get_agent['contact_no']); ?>
+                                    </p>
+                                    <p class="card-text">
+                                    <strong><?php echo htmlspecialchars($get_agent['1st_verification']); ?></strong>
+                                    </p>
+                                    <a href="mailto:<?php echo htmlspecialchars($get_agent['email_address']); ?>"
+                                        class="btn btn-primary">
+                                        Contact <?php echo htmlspecialchars($get_agent['fullname']); ?>
+                                    </a>
+                                </div>
                             </div>
-                        </div>
                         <?php
-                    } else {
-                        echo "<p>Agent not found.</p>";
-                    }
-                    ?>
+                            } else {
+                            echo "<p>Agent not found.</p>";
+                            }
+                        ?>
 
                     </div>
                 </div>
 
                 <div class="row">
-                    <div class="col">
-                        <div id="map" class="mt-5"></div>
+                    <div class="col-md">
+                        <!-- Display map -->
+                        <div id="map" class="mt-5">
+                            
+                        </div>
                     </div>
-                    <div class="col">
+                    <div class="col-md">
                         <!-- display carousels -->
                          <div class="mt-5">
-                         <h6><strong>Property Images</strong></h6>
                         <?php
                         // Fetch images related to the property
                         $conn = mysqli_connect("localhost", "root", "", "oreep360");
