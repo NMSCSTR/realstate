@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real Estate</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
+<body>
+    <h1>Welcome</h1>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+</body>
+</html>
+
+<?php
+
+include_once '../../database/db_config.php';
+$db = new Database();
+
+$user_id = $_POST['user_id'];
+$db->delete('users', 'user_id = ' .$user_id);
+
+
+
+
+<?php
+
+include_once '../../database/db_config.php';
+
+$db = new Database();
+
+$lastname = $_POST['lastname'];
+$firstname = $_POST['firstname'];
+$username = $_POST['username'];
+$password = $_POST['password'];
+$user_type = $_POST['user_type'];
+
+$data = array(
+    'last_name' => $lastname,
+    'first_name' => $firstname,
+    'username' => $username,
+    'password' => $password,
+    'user_type' => $user_type,
+);
+$db->insert('users', $data);
+
+
+<?php
+
+include_once '../../database/db_config.php';
+
+$db = new Database();
+
+$user_id = $_POST['user_id'];
+$lastname = $_POST['lastname'];
+$firstname = $_POST['firstname'];
+$username = $_POST['username'];
+$user_type = $_POST['user_type'];
+
+$data = array(
+    'last_name' => $lastname,
+    'first_name' => $firstname,
+    'username' => $username,
+    'user_type' => $user_type,
+    'user_id' => $user_id
+);
+$db->update('users', $data, 'user_id = ' . $user_id);
