@@ -130,11 +130,13 @@ body {
                             <td><?= $row['show_to_clients']; ?></td>
                             <td>
                                 <a href="edit_property.php?id=<?= $row['property_id']; ?>"
-                                    class="btn btn-warning btn-sm">Edit</a>
+                                    class="btn btn-warning btn-sm">EDIT</a>
                                 <a href="delete_property.php?id=<?= $row['property_id']; ?>"
-                                    class="btn btn-danger btn-sm">Delete</a>
+                                    class="btn btn-danger btn-sm">DELETE</a>
                                 <a href="add_amenities.php?property_id=<?= $row['property_id']; ?>"
-                                    class="btn btn-success btn-sm">View Aminities</a>
+                                    class="btn btn-success btn-sm">VIEW AMENITIES</a>
+                                <a href="add_image.php?property_id=<?= $row['property_id']; ?>"
+                                    class="btn btn-secondary btn-sm">ADD PROPERTY IMAGES</a>
                             </td>
                         </tr>
                         <?php endwhile; ?>

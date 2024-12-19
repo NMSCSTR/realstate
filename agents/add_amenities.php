@@ -126,8 +126,8 @@ body {
     <main>
         <div class="container mt-4">
             <div class="d-flex justify-content-between w-100">
-                <h5>View Aminities</h5>
-                <a href="agent_dashboard.php" class="btn btn-success mb-3">Back</a>
+                <h5>View Aminities for <span class="text-success text-bolder"><?= $row['name'] ?></span></h5>
+                <a href="agent_dashboard.php" class="btn btn-secondary btn-sm mb-3">Back</a>
             </div>
             <hr>
             <div class="table-responsive mb-3">
@@ -136,7 +136,6 @@ body {
                     <thead>
                         <tr>
                             <th>Property ID</th>
-                            <th>Name</th>
                             <th>Amenities</th>
                             <th>Actions</th>
 
@@ -146,7 +145,6 @@ body {
                         <?php while ($rows = $results->fetch_assoc()): ?>
                         <tr>
                             <td><?= htmlspecialchars($rows['property_id']); ?></td>
-                            <td><?= htmlspecialchars($rows['name']); ?></td>
                             <td>
                                 <?php
                                 $property_id = $rows['property_id'];
@@ -154,9 +152,9 @@ body {
                                 $amenities_result = $conn->query($amenities_query);
 
                                 if ($amenities_result && $amenities_result->num_rows > 0) {
-                                    while ($amenity = $amenities_result->fetch_assoc()) {
+                                 $amenity = $amenities_result->fetch_assoc();
                                         echo '<span class="badge rounded-pill text-bg-light shadow">' . htmlspecialchars($amenity['name']) . '</span> ';
-                                    }
+                                    
                                 } else {
                                     echo '<span class="text-muted">No amenities</span>';
                                 }
@@ -166,10 +164,11 @@ body {
                                 <!-- code para sa pag update sa amenity -->
                                 <a href="edit_amenities.php?id=<?= htmlspecialchars($rows['amenity_id']); ?>"
                                     class="btn btn-sm btn-outline-primary">Edit</a>
-                                    <!-- code para delete sa amenity sa property -->
-                                <a href="delete_amenities.php?id=<?= htmlspecialchars($rows['amenity_id']); ?>?property_id=<?= htmlspecialchars($rows['property_id']) ?>"
+                                <!-- code para delete sa amenity sa property -->
+                                <a href="delete_amenities.php?id=<?= htmlspecialchars($rows['amenity_id']); ?>&property_id=<?= htmlspecialchars($rows['property_id']); ?>"
                                     onclick="return confirm('Are you sure you want to delete?')"
                                     class="btn btn-sm btn-outline-danger">Delete</a>
+
                             </td>
                         </tr>
                         <?php endwhile; ?>
@@ -179,16 +178,11 @@ body {
 
             <form action="" method="post">
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control" readonly name="property_name" value="<?= $row['name'] ?>"
-                        id="property_name" placeholder="Please input aminity name...">
-                    <label for="property_name">Property Name</label>
-                </div>
-                <div class="form-floating mb-3">
                     <input type="text" class="form-control" name="aminity_name" id="aminity_name"
                         placeholder="Aminity Name" required>
                     <label for="aminity_name">Aminity Name</label>
                 </div>
-                <button class="btn btn-primary">Add Aminity</button>
+                <button class="btn btn-primary btn-sm">Add Aminity</button>
             </form>
 
         </div>
