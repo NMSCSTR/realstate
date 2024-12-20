@@ -135,7 +135,7 @@ body {
                     ?>
 
                 </div>
-                <div class="col">
+                <div class="col shadow p-4">
                     <div>
                         <h6><strong>Contact Agent:</strong></h6>
                         <?php
@@ -155,7 +155,7 @@ body {
                                     <strong><?php echo htmlspecialchars($get_agent['1st_verification']); ?></strong>
                                     </p>
                                     <a href="mailto:<?php echo htmlspecialchars($get_agent['email_address']); ?>"
-                                        class="btn btn-primary">
+                                        class="btn btn-primary btn-sm shadow">
                                         Contact <?php echo htmlspecialchars($get_agent['fullname']); ?>
                                     </a>
                                 </div>
