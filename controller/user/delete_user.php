@@ -8,7 +8,6 @@ if (isset($_GET['user_id'])) {
 
     $delete_sql = "DELETE FROM users WHERE user_id = $user_id";
     if (mysqli_query($conn, $delete_sql)) {
-        echo "User deleted successfully!";
         header("Location: ../../admin/account.php"); 
     } else {
         echo "Error deleting user. Please try again.";
@@ -18,6 +17,5 @@ if (isset($_GET['user_id'])) {
     exit();
 }
 
-// Close the connection
 mysqli_close($conn);
 ?>

@@ -4,7 +4,6 @@ $conn = mysqli_connect("localhost", "root", "", "oreep360");
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    // Retrieve and sanitize input values
     $agent_id =  $_POST['agent_id'];
     $fullname =$_POST['fullname'];
     $contact = $_POST['contact'];
@@ -22,7 +21,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             VALUES ('$agent_id', '$fullname', '$contact', '$email_address', '$password', '$first_verification', '$second_verification', '$registration_date', '$profile_img')";
 
     if (mysqli_query($conn, $sql)) {
-        echo "New agent added successfully.";
         header('Location: ../../admin/agent.php');
     } else {
         echo "Error: " . $sql . "<br>" . mysqli_error($conn);

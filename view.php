@@ -75,12 +75,12 @@ body {
         <nav class="navbar navbar-expand-lg bg-body-tertiary shadow">
             <div class="container-md">
                 <a class="navbar-brand" href="#" id="site-title">ONLINE REAL ESTATE ECOMMERCE PLATFORM</a>
-                <a href="index.php" class="btn btn-danger"><i class="bi bi-arrow-left-square"></i> Back</a>
+                <a href="index.php" class="btn btn-outline-secondary border-0 btn-sm shadow"><i class="bi bi-arrow-left-square"></i> Back</a>
             </div>
         </nav>
     </header>
     <main>
-        <div class="container mt-4 mb-4">
+        <div class="container mt-4 mb-4 shadow">
             <?php
                 $conn = mysqli_connect("localhost", "root", "", "oreep360");
                 $sql = "SELECT * FROM properties WHERE property_id = '$property_id'";
@@ -88,7 +88,7 @@ body {
                 if (mysqli_num_rows($result) > 0) {
                     while ($row = mysqli_fetch_assoc($result)) {
             ?>
-            <img class="img-fluid" style="width: 100%;" src="<?php echo htmlspecialchars($row['cover_img']); ?>"
+            <img class="img-fluid shadow" style="width: 100%;" src="<?php echo htmlspecialchars($row['cover_img']); ?>"
                 alt="<?php echo htmlspecialchars($row['cover_img']); ?>">
             <div class="d-flex justify-content-between mt-4">
                 <h4><strong><?php echo $row['name'];?></strong></h4>
@@ -155,7 +155,7 @@ body {
                                     <strong><?php echo htmlspecialchars($get_agent['1st_verification']); ?></strong>
                                     </p>
                                     <a href="mailto:<?php echo htmlspecialchars($get_agent['email_address']); ?>"
-                                        class="btn btn-primary btn-sm shadow">
+                                        class="btn btn-outline-success btn-sm shadow">
                                         Contact <?php echo htmlspecialchars($get_agent['fullname']); ?>
                                     </a>
                                 </div>
