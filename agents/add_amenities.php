@@ -189,7 +189,7 @@ body {
 
 
         <script src="../bootstrap/js/bootstrap.min.js"></script>
-
+        <!-- Initializing datatable -->
         <script>
         $(document).ready(function() {
             $('#myTable').DataTable({

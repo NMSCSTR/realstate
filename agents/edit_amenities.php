@@ -8,18 +8,20 @@ $conn = mysqli_connect("localhost", "root", "", "oreep360");
 if (!$conn) {
     die("Connection failed: " . mysqli_connect_error());
 }
-
+// If walay makuha nga id mo balik siya sa add_amenities nga pages
 if (!isset($_GET['id']) || empty($_GET['id'])) {
     header('Location: add_amenities.php');
     exit();
 }
-
+// if naay id sa url parameter iyaha dayung e stored gamnit ang variable nga $amenity_id
 $amenity_id =  $_GET['id'];
+// e select niya dadto sa database ang specific nga id nga ge pasa sa url parameter
 $fetch = "SELECT * FROM `property_amenities` WHERE `amenity_id` = '$amenity_id'";
 $result = mysqli_query($conn, $fetch);
 if (!$result) {
     die("Error fetching data: " . mysqli_error($conn));
 }
+// if successful ang query dayun nag exist ang id dadto sa database e fetch niya ang data gamit ang fetch assoc nga function
 $get_amenity_name = mysqli_fetch_assoc($result);
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_amenity'])) {

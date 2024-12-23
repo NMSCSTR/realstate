@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (!is_dir($property_dir)) {
             mkdir($property_dir, 0777, true);
         }
-
+        //LOOP IMAGES IF MORE WAS UPLOADED
         foreach ($_FILES['images']['tmp_name'] as $index => $tmp_name) {
             $file_name = basename($_FILES['images']['name'][$index]);
             $file_path = $property_dir . uniqid() . '_' . $file_name;
@@ -145,7 +145,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <?php
                     $images_query = "SELECT * FROM property_images WHERE property_id = $property_id";
                     $images_result = mysqli_query($conn, $images_query);
-
+                    //Loop images after adding it
                     if ($images_result && mysqli_num_rows($images_result) > 0) {
                         while ($image_row = mysqli_fetch_assoc($images_result)) {
                             $image_path = $image_row['image_path'];
