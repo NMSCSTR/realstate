@@ -1,10 +1,11 @@
 <?php
 session_start();
-
+// db connection
 $conn = mysqli_connect("localhost", "root", "", "oreep360");
 
+// http://www.agent.php?agent_id=4 
 if (isset($_GET['agent_id'])) {
-    $agent_id = $_GET['agent_id'];
+    $agent_id = $_GET['agent_id']; //stored 4
 
     $delete_sql = "DELETE FROM agents WHERE agent_id = $agent_id";
     if (mysqli_query($conn, $delete_sql)) {

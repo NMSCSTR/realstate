@@ -8,7 +8,7 @@ if (isset($_POST['agent_login'])) {
 
     $query = mysqli_query($conn,"SELECT * FROM agents WHERE email_address = '$email_address' AND password = '$password'"
 );
-    $row = mysqli_fetch_assoc($query); 
+    $row = mysqli_fetch_assoc($query);
     $count = mysqli_num_rows($query);
     
     if ($count > 0) {
