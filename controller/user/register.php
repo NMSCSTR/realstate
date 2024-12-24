@@ -32,6 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Insert into database
         $query = "INSERT INTO users (username, password, role) VALUES ('$username', '$hashed_password', '$role')";
         if (mysqli_query($conn, $query)) {
+            //using session for storing alert
             $_SESSION['success'] = "Registration successful! Please log in.";
             header("Location: ../../index.php");
             exit;
