@@ -152,7 +152,7 @@ body {
                 <a href="agent_dashboard.php" class="btn btn-success mb-3">Back</a>
             </div>
             <hr>
-
+            <!-- Form para edit ug amenities -->
             <form action="" method="post">
                 <div class="form-floating mb-3">
                     <input type="text" class="form-control" name="amenity_id" value="<?= $get_amenity_name['amenity_id']?>" id="id">
