@@ -1,22 +1,33 @@
 <?php
+// Start the session to access session variables
 session_start();
-if (!isset($_SESSION['user_id'])) {
-    header('Location: login.php');
-    exit();
-}
-?>
-<?php
 
+// Check if the 'user_id' session variable is not set
+if (!isset($_SESSION['user_id'])) {
+    // Redirect the user to the login page if they are not logged in
+    header('Location: login.php');
+    exit(); // Stop further script execution
+}
+
+// Establish a connection to the MySQL database
 $conn = mysqli_connect("localhost", "root", "", "oreep360");
 
-
+// Query to get the next auto-increment value for the 'agents' table
 $sql = "SELECT AUTO_INCREMENT FROM information_schema.tables WHERE table_name = 'agents' AND table_schema = 'oreep360'";
+
+// Execute the query and store the result
 $result = mysqli_query($conn, $sql);
+
+// Fetch the next auto-increment value from the query result
 $row = mysqli_fetch_assoc($result);
+
+// Retrieve the next auto-increment value for the 'agents' table
 $next_agent_id = $row['AUTO_INCREMENT'];
 
+// Close the database connection
 mysqli_close($conn);
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -104,6 +115,7 @@ body {
                     agent</button>
             </div>
             <hr>
+            <!-- Table for displaying all agents -->
             <div class="table-responsive mb-3">
                 <table id="myTable" class="display responsive nowrap  caption-top">
                     <caption>List of Agents</caption>
@@ -126,7 +138,7 @@ body {
                         if (!$conn) {
                             die("Connection failed: " . mysqli_connect_error());
                         }
-
+                        // Select query for getting all agents stored sa database
                         $sql = "SELECT * FROM agents";
                         $result = mysqli_query($conn, $sql);
 

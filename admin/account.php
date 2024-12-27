@@ -115,6 +115,7 @@ body {
                     </div>
                 </div>
             </div>
+            <!-- Table for displaying info -->
             <div class="table-responsive">
                 <table id="myTable" class="display responsive nowrap  caption-top">
                     <caption>List of users</caption>
@@ -134,7 +135,8 @@ body {
                             $result = mysqli_query($conn, $sql);
 
                             if (mysqli_num_rows($result) > 0) {
-                            
+
+                                // display users info
                                 while ($row = mysqli_fetch_assoc($result)) { ?>
                                     <tr>
                                     <td><?php echo $row['user_id'] ?> </td>

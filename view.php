@@ -88,6 +88,7 @@ body {
                 if (mysqli_num_rows($result) > 0) {
                     while ($row = mysqli_fetch_assoc($result)) {
             ?>
+            <!-- Fetch image and other details -->
             <img class="img-fluid shadow" style="width: 100%;" src="<?php echo htmlspecialchars($row['cover_img']); ?>"
                 alt="<?php echo htmlspecialchars($row['cover_img']); ?>">
             <div class="d-flex justify-content-between mt-4">
@@ -113,6 +114,7 @@ body {
                     if (!$conn) {
                         die("Connection failed: " . mysqli_connect_error());
                     }
+                    // fetch specific amenities
 
                     $query = mysqli_query($conn, "SELECT * FROM `property_amenities` WHERE property_id = '$property_id'");
 
@@ -140,6 +142,7 @@ body {
                         <h6><strong>Contact Agent:</strong></h6>
                         <?php
                         $conn = mysqli_connect("localhost", "root", "", "oreep360");
+                        // fetch speficific agent data
                         $querys = mysqli_query($conn, "SELECT * FROM agents WHERE agent_id = '$agent_id'");
 
                         if ($querys && mysqli_num_rows($querys) > 0) {

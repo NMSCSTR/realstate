@@ -157,7 +157,7 @@ body {
         $conn = mysqli_connect("localhost", "root", "", "oreep360");
         $sql = "SELECT property_id, name, address, cover_img FROM properties WHERE show_to_clients = 'Yes'";
         $result = mysqli_query($conn, $sql);
-
+        // fetch all available properties
         if (mysqli_num_rows($result) > 0) {
             while ($row = mysqli_fetch_assoc($result)) {
         ?>
