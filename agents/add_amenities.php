@@ -1,50 +1,72 @@
 <?php
+// Start a session to access session variables
 session_start();
+
+// Check if the 'agent_id' session variable is set, meaning the user is logged in as an agent
 if (!isset($_SESSION['agent_id'])) {
+    // If the user is not logged in, redirect them to the login page
     header('Location: login.php');
-    exit();
+    exit(); // Stop further script execution
 }
+
+// Connect to the MySQL database 'oreep360' with the provided credentials
 $conn = mysqli_connect("localhost", "root", "", "oreep360");
+
+// Check if the 'property_id' is passed in the URL as a GET parameter
 if (isset($_GET['property_id'])) {
+    // Retrieve and sanitize the property_id to ensure it's an integer
     $property_id = intval($_GET['property_id']); 
+    
+    // Prepare a query to fetch property details using the provided property_id
     $query = "SELECT * FROM properties WHERE property_id = $property_id";
     $result = mysqli_query($conn, $query);
 
-
+    // Check if the property is found in the database
     if ($result && mysqli_num_rows($result) > 0) {
+        // Fetch the property details into an associative array
         $row = mysqli_fetch_assoc($result);
     } else {
+        // If no property is found, display an error message
         echo "Property not found.";
     }
 } else {
+    // If no property_id is provided in the URL, display an error message
     echo "No property ID provided.";
 }
 
+// Fetch all amenities related to the current property_id
 $sql = "SELECT * FROM `property_amenities` WHERE property_id = '$property_id'";
 $results = $conn->query($sql);
 
-
+// If the form is submitted (POST request), proceed to handle the form data
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $aminity_name = mysqli_real_escape_string($conn, $_POST['aminity_name']); 
-    $property_id = mysqli_real_escape_string($conn, $property_id); 
+    // Sanitize the input values to prevent SQL injection
+    $aminity_name = mysqli_real_escape_string($conn, $_POST['aminity_name']);
+    $property_id = mysqli_real_escape_string($conn, $property_id);
 
+    // Check if the amenity already exists for the given property_id
     $check_query = "SELECT * FROM `property_amenities` WHERE `property_id` = '$property_id' AND `name` = '$aminity_name'";
     $check_result = mysqli_query($conn, $check_query);
 
+    // If the amenity already exists, alert the user
     if (mysqli_num_rows($check_result) > 0) {
         echo '<script>alert("Amenity already exists.");</script>';
     } else {
+        // If the amenity does not exist, insert the new amenity into the database
         $query = "INSERT INTO `property_amenities` (`property_id`, `name`) VALUES ('$property_id', '$aminity_name')";
+        
+        // If the query is successful, redirect to the 'add_amenities.php' page with the property_id as a parameter
         if (mysqli_query($conn, $query)) {
             header("Location: add_amenities.php?property_id=$property_id");
         } else {
+            // If there's an error inserting the amenity, display an error message
             echo "Error adding amenity: " . mysqli_error($conn);
         }
     }
 }
 
-
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -130,6 +152,7 @@ body {
                 <a href="agent_dashboard.php" class="btn btn-secondary btn-sm mb-3">Back</a>
             </div>
             <hr>
+            <!-- Displaying all amenities using table -->
             <div class="table-responsive mb-3">
                 <table id="myTable" class="display responsive nowrap caption-top">
                     <caption>List of Aminities</caption>
@@ -176,7 +199,7 @@ body {
                     </tbody>
                 </table>
             </div>
-
+            <!-- Form para add ug amenty and backend code naas taas -->
             <form action="" method="post">
                 <div class="form-floating mb-3">
                     <input type="text" class="form-control" name="aminity_name" id="aminity_name"

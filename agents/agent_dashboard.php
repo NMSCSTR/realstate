@@ -1,18 +1,50 @@
 <?php
+// Start the session to access session variables like 'agent_id'
 session_start();
-if (!isset($_SESSION['agent_id'])) {
-    header('Location: login.php');
-    exit();
-}
-$conn = mysqli_connect("localhost", "root", "", "oreep360");
-?>
 
-<?php
+// Check if the 'agent_id' is set in the session, indicating the user is logged in as an agent
+if (!isset($_SESSION['agent_id'])) {
+    // If not logged in, redirect to the login page
+    header('Location: login.php');
+    exit(); // Stop further execution of the script after the redirect
+}
+
+// Establish a connection to the MySQL database 'oreep360' with the provided credentials
+$conn = mysqli_connect("localhost", "root", "", "oreep360");
+
+// Check if the connection was successful
+if (!$conn) {
+    // If the connection fails, display an error message and terminate the script
+    die("Connection failed: " . mysqli_connect_error());
+}
+
+// Get the agent's ID from the session
 $agent_id = $_SESSION['agent_id'];
+
+// Prepare a query to select all properties listed by the current agent
 $sql = "SELECT * FROM properties WHERE agent_id = '$agent_id'";
+
+// Execute the query and store the result in the $result variable
 $result = $conn->query($sql);
 
+// Check if the query execution was successful and if there are any results
+if ($result && $result->num_rows > 0) {
+    // If there are properties, loop through the result set
+    while ($property = $result->fetch_assoc()) {
+        // For each property, you can display the details (e.g., $property['name'], $property['price'], etc.)
+        echo "Property Name: " . $property['name'] . "<br>";
+        echo "Price: " . $property['price'] . "<br>";
+        // You can add more property details as needed
+    }
+} else {
+    // If no properties are found for the agent, display a message
+    echo "No properties found for this agent.";
+}
+
+// Close the database connection after finishing the query
+mysqli_close($conn);
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
