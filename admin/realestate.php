@@ -1,14 +1,34 @@
+
 <?php
+// Start a new session or resume the current session
 session_start();
+
+// Check if the user is logged in by verifying if the 'user_id' session variable is set
 if (!isset($_SESSION['user_id'])) {
+    // If the user is not logged in, redirect them to the login page
     header('Location: login.php');
-    exit();
+    exit(); // Stop further script execution
 }
 
+// Connect to the MySQL database 'oreep360' using the specified credentials
 $conn = mysqli_connect("localhost", "root", "", "oreep360");
+
+// Check if the connection to the database is successful
+if (!$conn) {
+    // If the connection fails, output an error message and stop further execution
+    die("Connection failed: " . mysqli_connect_error());
+}
+
+// Write a query to select all records from the 'properties' table
 $sql = "SELECT * FROM properties";
+
+// Execute the query on the database
 $result = $conn->query($sql);
+
+// If the query is successful, the result will contain all the properties
+// You can use the $result object to fetch the data
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -91,6 +111,7 @@ body {
         <div class="container mt-4">
             <h5>Real Estates</h5>
             <hr>
+            <!-- table for displaying all realstate -->
             <div class="table-responsive mb-3">
                 <table id="myTable" class="display responsive nowrap  caption-top">
                     <caption>List of Properties</caption>
