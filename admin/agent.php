@@ -162,9 +162,12 @@ body {
                             </td>
                             <td><?php echo $row['registration_date']; ?></td>
                             <td>
+                                <!-- redirect to update page -->
                                 <a href='edit_agent.php?agent_id=<?php echo $row['agent_id']; ?>'>Edit</a> |
+                                <!-- code for deleting agents -->
                                 <a onclick="return confirm('are you sure you want to delete this agent?')"
                                     href='../controller/user/delete_agent.php?agent_id=<?php echo $row['agent_id']; ?>'>Delete</a>|
+                                    <!-- Update status to verified -->
                                 <a onclick="return confirm('are you sure you want to verified this agent?')" href='../controller/user/verified_agent.php?agent_id=<?php echo $row['agent_id']; ?>'>Verified Agent</a>
                             </td>
                         </tr>
@@ -181,7 +184,7 @@ body {
                 </table>
             </div>
 
-            <!-- Add Agent Collapse -->
+            <!-- Add Agent form Collapse -->
             <div class="collapse" id="collapseExample">
                 <h4>Add Agent</h4>
                 <div class="card card-body">
@@ -222,6 +225,7 @@ body {
     </main>
 
     <script src="../bootstrap/js/bootstrap.min.js"></script>
+    <!-- initializing datatable -->
     <script>
     $(document).ready(function() {
         $('#myTable').DataTable({

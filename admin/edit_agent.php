@@ -1,59 +1,72 @@
+<!-- code for updating agent -->
 <?php 
+// Start the session to access session variables
 session_start();
 
-// Check if user is logged in
+// Check if the user is logged in by checking the 'user_id' session variable
 if (!isset($_SESSION['user_id'])) {
+    // If not logged in, redirect to the login page
     header('Location: login.php');
-    exit();
+    exit(); // Stop the script from executing further
 }
 
-// Connect to the database
+// Connect to the MySQL database
 $conn = mysqli_connect("localhost", "root", "", "oreep360");
 
-// Check connection
+// Check if the database connection is successful
 if (!$conn) {
+    // If connection fails, output an error and stop the script
     die("Connection failed: " . mysqli_connect_error());
 }
 
-// Get user_id from the URL
+// Check if 'agent_id' is passed in the URL
 if (isset($_GET['agent_id'])) {
+    // Get the agent_id from the URL
     $agent_id = $_GET['agent_id'];
 
-    // Fetch the user data from the database
+    // Query to fetch agent data from the database based on the agent_id
     $sql = "SELECT * FROM agents WHERE agent_id = $agent_id";
     $result = mysqli_query($conn, $sql);
 
+    // If data is found, fetch it
     if ($result && mysqli_num_rows($result) > 0) {
-        $user = mysqli_fetch_assoc($result);
+        $user = mysqli_fetch_assoc($result); // Store user data in the $user array
     } else {
+        // If no agent is found, output an error message and stop the script
         echo "Agent not found.";
         exit();
     }
 } else {
+    // If 'agent_id' is not passed in the URL, output an error and stop the script
     echo "Invalid request.";
     exit();
 }
 
+// Check if the form is submitted (POST request)
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    // Retrieve the form data using the POST method, or set it to empty if not provided
     $agent_id = $_POST['agent_id'] ?? '';
     $fullname = $_POST['fullname'] ?? '';
     $contact_no = $_POST['contact_no'] ?? '';
     $email_address = $_POST['email_address'] ?? '';
     $password = $_POST['password'] ?? '';
 
-
+    // Prepare the SQL query to update the agent's details
     $update_sql = "UPDATE `agents` SET `fullname`='$fullname',`contact_no`='$contact_no',`email_address`='$email_address',`password`='$password' WHERE agent_id = $agent_id";
 
+    // Execute the update query
     if (mysqli_query($conn, $update_sql)) {
+        // If the update is successful, display a success message and redirect
         echo "Agent details updated successfully!";
-        header("Location: agent.php");
+        header("Location: agent.php"); // Redirect to the agent list page
         exit();
     } else {
+        // If an error occurs while updating, display an error message
         echo "Error updating user. Please try again.";
     }
-    
 }
 
+// Close the database connection
 mysqli_close($conn);
 ?>
 
@@ -182,17 +195,24 @@ body {
 
     <!-- kani para sa show/hide password -->
     <script>
+    // Get the checkbox element with the id 'flexCheckDefault'
     const showPasswordCheckbox = document.getElementById('flexCheckDefault');
+
+    // Get the password input field with the id 'floatingPassword'
     const show_pass = document.getElementById('floatingPassword');
 
+    // Add an event listener to the checkbox that listens for a change in its state
     showPasswordCheckbox.addEventListener('change', () => {
+        // If the checkbox is checked, change the input type to 'text' to show the password
         if (showPasswordCheckbox.checked) {
             show_pass.type = 'text';
         } else {
+            // If the checkbox is unchecked, change the input type to 'password' to hide the password
             show_pass.type = 'password';
         }
     })
     </script>
+
 </body>
 
 </html>
