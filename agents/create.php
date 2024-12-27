@@ -1,18 +1,27 @@
 <?php
+// Enable error reporting for debugging purposes
 ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1); 
-error_reporting(E_ALL); 
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
+// Start the session to use session variables
 session_start();
+
+// Check if the session variable 'agent_id' is not set
 if (!isset($_SESSION['agent_id'])) {
+    // Redirect to the login page if the user is not logged in
     header('Location: ../index.php');
-    exit();
+    exit(); // Stop further script execution
 }
 
+// Establish a connection to the MySQL database
 $conn = mysqli_connect("localhost", "root", "", "oreep360");
 
+// Check if the request method is POST
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    // Retrieve the agent ID from the session
     $agent_id = $_SESSION['agent_id'];
+    // Retrieve form data from the POST request
     $name = $_POST['name'];
     $description = $_POST['description'];
     $address = $_POST['address'];
@@ -20,47 +29,53 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $map_latitude = $_POST['map_latitude'];
     $map_longitude = $_POST['map_longitude'];
     $show_to_clients = $_POST['show_to_clients'];
-    
+
     // Handle file upload
-    $cover_img_path = null;
+    $cover_img_path = null; // Initialize the cover image path variable
     if (isset($_FILES['cover_img']) && $_FILES['cover_img']['error'] === UPLOAD_ERR_OK) {
-        $file = $_FILES['cover_img'];
-        
-        // Generate a unique folder name
+        $file = $_FILES['cover_img']; // Get the uploaded file details
+
+        // Generate a unique folder name for the property
         $randomFolder = uniqid('property_', true);
         $uploadDir = "uploads/properties/$randomFolder/";
-        
+
         // Create the directory if it doesn't exist
         if (!is_dir($uploadDir)) {
             mkdir($uploadDir, 0777, true);
         }
-        
-        // Sanitize file name and determine the target path
+
+        // Sanitize the file name and set the target file path
         $fileName = basename($file['name']);
         $filePath = $uploadDir . $fileName;
-        
-        // Move the file to the target directory
+
+        // Move the uploaded file to the target directory
         if (move_uploaded_file($file['tmp_name'], $filePath)) {
-            $cover_img_path = $filePath;
+            $cover_img_path = $filePath; // Save the file path if the upload succeeds
         } else {
-            echo "Failed to upload the file.";
-            exit();
+            echo "Failed to upload the file."; // Display an error if the upload fails
+            exit(); // Stop further execution
         }
     }
 
-
+    // Escape the cover image path for SQL insertion
     $cover_img_path_escaped = $cover_img_path ? mysqli_real_escape_string($conn, $cover_img_path) : null;
-    $sql = "INSERT INTO properties (`agent_id`, `name`, `description`, `address`, `price`, `map_latitude`, `map_longitude`, `cover_img`, `show_to_clients`) 
-    VALUES ('$agent_id', '$name', '$description', '$address', '$price', '$map_latitude', '$map_longitude', '$cover_img_path_escaped', '$show_to_clients')";
 
+    // Insert the property details into the database
+    $sql = "INSERT INTO properties (`agent_id`, `name`, `description`, `address`, `price`, `map_latitude`, `map_longitude`, `cover_img`, `show_to_clients`) 
+            VALUES ('$agent_id', '$name', '$description', '$address', '$price', '$map_latitude', '$map_longitude', '$cover_img_path_escaped', '$show_to_clients')";
+
+    // Check if the query execution was successful
     if ($conn->query($sql) === TRUE) {
+        // Redirect to the agent dashboard on success
         header('Location: agent_dashboard.php');
-        exit();
+        exit(); // Stop further script execution
     } else {
+        // Display an error message if the query fails
         echo "Error: " . $conn->error;
     }
 }
 ?> 
+
 
 <!DOCTYPE html>
 <html lang="en">

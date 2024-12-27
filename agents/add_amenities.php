@@ -142,6 +142,7 @@ body {
                         </tr>
                     </thead>
                     <tbody>
+                        <!-- Loop all amenities stored in the database -->
                         <?php while ($rows = $results->fetch_assoc()): ?>
                         <tr>
                             <td><?= htmlspecialchars($rows['property_id']); ?></td>

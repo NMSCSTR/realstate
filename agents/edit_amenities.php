@@ -1,41 +1,67 @@
 <?php
+// Start the session to use session variables
 session_start();
+
+// Check if the session variable 'agent_id' is not set
 if (!isset($_SESSION['agent_id'])) {
+    // Redirect the user to the login page if not logged in
     header('Location: login.php');
-    exit();
+    exit(); // Stop further execution of the script
 }
+
+// Establish a connection to the MySQL database
 $conn = mysqli_connect("localhost", "root", "", "oreep360");
+
+// Check if the connection failed
 if (!$conn) {
+    // Display an error message and terminate the script if connection failed
     die("Connection failed: " . mysqli_connect_error());
 }
-// If walay makuha nga id mo balik siya sa add_amenities nga pages
+
+// Check if the 'id' parameter is missing or empty in the URL
 if (!isset($_GET['id']) || empty($_GET['id'])) {
+    // Redirect the user to the add_amenities page
     header('Location: add_amenities.php');
-    exit();
+    exit(); // Stop further execution of the script
 }
-// if naay id sa url parameter iyaha dayung e stored gamnit ang variable nga $amenity_id
-$amenity_id =  $_GET['id'];
-// e select niya dadto sa database ang specific nga id nga ge pasa sa url parameter
+
+// Store the 'id' parameter from the URL in the $amenity_id variable
+$amenity_id = $_GET['id'];
+
+// Query the database to fetch details for the specified amenity ID
 $fetch = "SELECT * FROM `property_amenities` WHERE `amenity_id` = '$amenity_id'";
 $result = mysqli_query($conn, $fetch);
+
+// Check if the query execution failed
 if (!$result) {
+    // Display an error message and terminate the script if the query fails
     die("Error fetching data: " . mysqli_error($conn));
 }
-// if successful ang query dayun nag exist ang id dadto sa database e fetch niya ang data gamit ang fetch assoc nga function
+
+// Fetch the resulting data as an associative array if the query is successful
 $get_amenity_name = mysqli_fetch_assoc($result);
 
+// Check if the request method is POST and the 'update_amenity' button was clicked
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_amenity'])) {
+    // Get the amenity ID from the form submission
     $amenity_id = $_POST['amenity_id'];
+    // Get the updated name from the form submission
     $name = $_POST['name'];
 
+    // Query to update the amenity's name in the database
     $updateqry = "UPDATE `property_amenities` SET `name`='$name' WHERE amenity_id = '$amenity_id'";
 
+    // Check if the update query executed successfully
     if (mysqli_query($conn, $updateqry)) {
+        // Redirect the user to the add_amenities page with the related property ID
         header("Location: add_amenities.php?property_id=" . urlencode($get_amenity_name['property_id']));
-        exit();
+        exit(); // Stop further execution of the script
     } else {
+        // Display an error message if the update query fails
         echo "Error updating amenity: " . mysqli_error($conn);
     }
+
+    // Close the database connection
     mysqli_close($conn);
 }
 ?>
@@ -138,6 +164,7 @@ body {
             </form>
         
             <script src="../bootstrap/js/bootstrap.min.js"></script>
+            <!-- datatable script -->
             <script>
             $(document).ready(function() {
                 $('#myTable').DataTable({
