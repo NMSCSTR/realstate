@@ -3,38 +3,40 @@ session_start();
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 $conn = mysqli_connect("localhost", "root", "", "oreep360");
- 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $username = trim($_POST['username']);
-    $password = trim($_POST['password']);
-    $role = isset($_POST['role']) ? trim($_POST['role']) : 'user'; // Default to 'user'
 
-    // Debugging output
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Sanitize input to prevent SQL injection
+    $username = mysqli_real_escape_string($conn, $_POST['username']);
+    $password = mysqli_real_escape_string($conn, $_POST['password']);
+    $role = isset($_POST['role']) ? mysqli_real_escape_string($conn, trim($_POST['role'])) : 'user'; // Default to 'user'
+
+    // Check if username and password are provided
     if (!$username || !$password) {
-        die("Debug: Username or password is empty.");
+        $_SESSION['error'] = "Please fill in all fields.";
+        header("Location: ../../register.php");
+        exit;
     }
 
-    // Allowed roles
+    // Allowed roles check
     $allowed_roles = ['user', 'admin'];
     if (!in_array($role, $allowed_roles)) {
-        die("Invalid role selected.");
+        $_SESSION['error'] = "Invalid role selected.";
+        header("Location: ../../register.php");
+        exit;
     }
 
-    // Check for duplicate username
-    $query = "SELECT id FROM users WHERE username = '$username'";
+    // Check if username already exists
+    $query = "SELECT user_id FROM users WHERE username = '$username'";
     $result = mysqli_query($conn, $query);
 
     if ($result && mysqli_num_rows($result) > 0) {
         $_SESSION['error'] = "Username is already taken.";
     } else {
-        // Hash the password
-        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-
-        // Insert into database
-        $query = "INSERT INTO users (username, password, role) VALUES ('$username', '$hashed_password', '$role')";
+        // Insert new user into the database
+        $query = "INSERT INTO users (username, password, user_type) VALUES ('$username', '$password', '$role')";
         if (mysqli_query($conn, $query)) {
-            //using session for storing alert
             $_SESSION['success'] = "Registration successful! Please log in.";
+            mysqli_close($conn);
             header("Location: ../../index.php");
             exit;
         } else {
@@ -42,9 +44,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
     mysqli_close($conn);
-    header("Location: ../../index.php");
+    header("Location: ../../register.php");
     exit;
 }
 
 header("HTTP/1.1 403 Forbidden");
 exit;
+?>
