@@ -89,7 +89,7 @@ body {
                     while ($row = mysqli_fetch_assoc($result)) {
             ?>
             <!-- Fetch image and other details -->
-            <img class="img-fluid shadow" style="width: 100%;" src="<?php echo htmlspecialchars($row['cover_img']); ?>"
+            <img class="img-fluid shadow" style="width: 100%;" src="agents/<?php echo htmlspecialchars($row['cover_img']); ?>"
                 alt="<?php echo htmlspecialchars($row['cover_img']); ?>">
             <div class="d-flex justify-content-between mt-4">
                 <h4><strong><?php echo $row['name'];?></strong></h4>

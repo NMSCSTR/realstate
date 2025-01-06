@@ -25,7 +25,7 @@ if (isset($_GET['id'])) {
     // Execute the query and check if it was successful
     if ($conn->query($sql) === TRUE) {
         // Redirect the user to the index page after deletion
-        header('Location: index.php');
+        header('Location: agent_dashboard.php');
         exit(); // Stop further script execution
     } else {
         // Display an error message if the query fails

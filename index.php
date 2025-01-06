@@ -139,7 +139,6 @@ body {
                             <button type="submit" class="btn btn-primary btn-block" name="agent_login">Login</button>
                         </div>
                     </form>
-
                 </div>
             </div>
         </div>
@@ -164,7 +163,7 @@ body {
             <div class="card property-card" style="width: 18rem; margin: 1rem;"
                 data-name="<?php echo htmlspecialchars($row['name']); ?>"
                 data-address="<?php echo htmlspecialchars($row['address']); ?>">
-                <img src="<?php echo htmlspecialchars($row['cover_img']); ?>" class="card-img-top w-100"
+                <img src="agents/<?php echo htmlspecialchars($row['cover_img']); ?>" class="card-img-top w-100"
                     style="height: 200px; object-fit: cover;" alt="<?php echo htmlspecialchars($row['name']); ?>">
                 <div class="card-body">
                     <h5 class="card-title"><?php echo htmlspecialchars($row['name']); ?></h5>
