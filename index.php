@@ -78,7 +78,7 @@ body {
         </div>
     </div>
 
-    <!-- Sign Up -->
+    <!-- Sign Up For admin and User-->
     <div class="offcanvas offcanvas-end" data-bs-backdrop="static" tabindex="-1" id="signup"
         aria-labelledby="staticBackdropLabel">
         <div class="offcanvas-header">
@@ -136,6 +136,8 @@ body {
                             <label for="floatingPassword">Password</label>
                         </div>
                         <div class="d-grid gap-2">
+                            <span>Don't have an agent account? <a href="" data-bs-toggle="modal"
+                                    data-bs-target="#agentModalSignUp">Create Now</a></span>
                             <button type="submit" class="btn btn-primary btn-block" name="agent_login">Login</button>
                         </div>
                     </form>
@@ -143,6 +145,53 @@ body {
             </div>
         </div>
     </div>
+
+    <!-- Modal for Agent Sign Up -->
+    <div class="modal fade" id="agentModalSignUp" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Add Agent</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Add Agent form Collapse -->
+                        <form action="controller/user/add_agent1.php" method="post" enctype="multipart/form-data">
+                            <div class="form-floating mb-3">
+                                <?php $agent_id = rand(10000, 99999); ?>
+                                <input type="text" class="form-control" name="agent_id"
+                                    value="<?php echo $agent_id ?>" id="floatingInput" placeholder="Agent ID"
+                                    required>
+                                <label for="floatingInput">Agent Id</label>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" name="fullname" id="floatingInput"
+                                    placeholder="Full Name" required>
+                                <label for="floatingInput">Full Name</label>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" name="contact" id="floatingInput"
+                                    placeholder="Full Name" required>
+                                <label for="floatingInput">Contact #</label>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input type="email" class="form-control" name="email_address" id="floatingInput"
+                                    placeholder="Email Address" required>
+                                <label for="floatingInput">Email Address</label>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input type="password" class="form-control" name="password" id="floatingPassword"
+                                    placeholder="Password" required>
+                                <label for="floatingPassword">Password</label>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Add Agent</button>
+                        </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <main>
         <div class="container mt-4">
@@ -195,7 +244,7 @@ body {
         propertyCards.forEach(card => {
             const propertyName = card.dataset.name.toLowerCase(); // Get the name of the property
             const propertyAddress = card.dataset.address
-        .toLowerCase(); // Get the address of the property
+                .toLowerCase(); // Get the address of the property
 
             // Show/hide the card based on whether it matches the search query
             if (propertyName.includes(searchValue) || propertyAddress.includes(searchValue)) {
